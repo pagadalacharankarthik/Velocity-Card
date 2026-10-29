@@ -1,40 +1,80 @@
 # Velocity Card Engine
 
-A static web application for creating and managing premium digital wedding invitations. It includes a storefront, order form, invitation templates, a shop portal, and an admin dashboard.
+A static web application prototype for creating and managing premium digital wedding invitations. It includes a storefront, order form, invitation templates, a shop portal, and an admin dashboard. The project explores how print shops can manage digital wedding invitation orders and invitation designs through a simple web interface.
 
-## Pages
+## Features
 
-- `index.html` - Product landing page and template showcase.
-- `order.html` - Invitation order form.
-- `shop.html` - Shop account portal.
-- `admin/login.html` - Admin dashboard and login.
-- `admin/order.html` and `admin/shop.html` - Admin order and shop views.
-- `templates/` - Invitation designs used for published invitations.
-- `supabase-app.js` - Local Supabase integration; intentionally excluded from this public repository.
-- `code.gs` - Optional Google Apps Script backend using Google Sheets.
+* **Storefront:** Landing page showcasing invitation designs.
+* **Order Form:** Interface for collecting wedding invitation details.
+* **Invitation Templates:** Designs for digital wedding invitations.
+* **Shop Portal:** Interface for shop-related activities.
+* **Admin Dashboard:** Pages for managing orders and shops.
+* **Prototype Backend:** Optional Google Apps Script integration using Google Sheets.
 
-## Run locally
+## Project Structure
 
-The front end is static and can be served using any local HTTP server. With Node.js installed, run this from the project directory:
-
-```powershell
-npx --yes http-server . -p 4173 -c-1
+```text
+Velocity-Card-Engine/
+├── index.html
+├── order.html
+├── shop.html
+├── admin/
+│   ├── login.html
+│   ├── order.html
+│   └── shop.html
+├── templates/
+├── code.gs
+└── README.md
 ```
 
-Then open <http://127.0.0.1:4173>. Stop the server with `Ctrl+C`.
+* `index.html` — Landing page and invitation showcase.
+* `order.html` — Invitation order form.
+* `shop.html` — Shop portal interface.
+* `admin/` — Admin login and management pages.
+* `templates/` — Invitation design templates.
+* `code.gs` — Optional Google Apps Script backend using Google Sheets.
 
-Opening the HTML files directly may work for simple previews, but a local HTTP server is recommended for consistent browser behavior and relative links.
+## Run Locally
 
-## Configuration
+The project uses HTML, CSS, and JavaScript and can be previewed with a local HTTP server.
 
-The public repository does not include `supabase-app.js`, so Supabase-backed order, account, upload, RSVP, analytics, and admin workflows are not functional from this checkout until an integration is supplied. The HTML pages still contain script references to that excluded file. The optional Apps Script backend also needs configuration and deployment.
+1. Install [Node.js](https://nodejs.org) if it is not already installed.
+2. Open a terminal in the project directory.
+3. Run:
+   ```bash
+   npx --yes http-server . -p 4173
+   ```
+4. Open [http://127.0.0.1:4173](http://127.0.0.1:4173) in your browser.
 
-1. In `code.gs`, replace `YOUR_GOOGLE_SHEET_ID` with the spreadsheet ID and set the `ADMIN_PASSWORD` script property in Apps Script project settings.
-2. Deploy the Apps Script project as a web app and connect the front end to the deployed endpoint as required by the app.
-3. Configure optional Cloudinary values if image hosting is used.
+Press `Ctrl+C` in the terminal to stop the server.
 
-Never put passwords, private keys, or service-role credentials in browser code or a public repository. Rotate any credentials that have already been exposed. This project has no package manifest or automated build step; its pages load browser libraries such as GSAP and the Supabase client from CDNs.
+## Technology Stack
 
-## Deployment
+* HTML, CSS, and JavaScript
+* Google Apps Script (optional backend)
+* Google Sheets (optional data storage)
+* Browser libraries loaded through CDNs, where applicable
 
-Deploy the static files to a static hosting provider and configure the required backend services separately. Keep credentials and environment-specific configuration out of the public client bundle. Invitation and admin flows may require additional backend setup before deployment.
+## Project Status
+
+**Status: Prototype — Not Yet Deployed**
+
+This project is currently a basic prototype intended to explore the user interface and workflow for digital wedding invitation management.
+
+* The front-end pages can be previewed locally.
+* Backend integration requires additional configuration and testing.
+* Order processing, authentication, data persistence, and admin permissions may not be fully functional.
+* Production deployment and security hardening have not been completed.
+
+## Future Improvements
+
+* Complete and test backend integration.
+* Add secure authentication and role-based access control.
+* Store orders and invitation details in a reliable database.
+* Improve invitation customization and preview features.
+* Validate forms and add error handling.
+* Deploy the application after testing the complete workflow.
+
+## Disclaimer
+
+This project is a work in progress. Features shown in the interface may require additional implementation before they can be used in a production environment.
