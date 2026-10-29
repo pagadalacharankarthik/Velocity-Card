@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charan Labs Solution – Premium Digital Wedding Invitations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Cinzel:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-dark: #8B6914;
+  --rose: #C4788A;
+  --rose-light: #E8A5B5;
+  --cream: #FAF7F0;
+  --ink: #1A1208;
+  --muted: #6B5B3E;
+  --surface: #F5F0E8;
+  --white: #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--ink);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.2rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(26, 18, 8, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.nav-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--cream); font-weight: 400; }
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(250, 247, 240, 0.7);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+
+.nav-cta {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  background: var(--gold);
+  padding: 0.6rem 1.5rem;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.nav-cta:hover { background: var(--gold-light); }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201, 168, 76, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(196, 120, 138, 0.06) 0%, transparent 50%),
+    linear-gradient(160deg, #1A1208 0%, #0D0A04 100%);
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: float-particle 8s infinite;
+}
+
+@keyframes float-particle {
+  0% { opacity: 0; transform: translateY(100vh) scale(0); }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { opacity: 0; transform: translateY(-20px) scale(1); }
+}
+
+.hero-ornament {
+  font-size: 3rem;
+  color: var(--gold);
+  opacity: 0.3;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5em;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  padding: 0.4rem 1.5rem;
+  margin-bottom: 2rem;
+  opacity: 0;
+}
+
+h1.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  letter-spacing: -0.01em;
+}
+
+h1.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero-subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  letter-spacing: 0.3em;
+  color: rgba(250, 247, 240, 0.5);
+  margin-bottom: 3rem;
+  opacity: 0;
+  text-transform: uppercase;
+}
+
+.hero-desc {
+  max-width: 540px;
+  margin: 0 auto 3rem;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(250, 247, 240, 0.65);
+  opacity: 0;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+}
+
+.btn-primary {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+  padding: 1rem 2.5rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.2);
+  transform: translateX(-100%);
+  transition: transform 0.4s;
+}
+
+.btn-primary:hover::before { transform: translateX(100%); }
+
+.btn-outline {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: transparent;
+  padding: 1rem 2.5rem;
+  text-decoration: none;
+  border: 1px solid rgba(201, 168, 76, 0.5);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-outline:hover {
+  background: rgba(201, 168, 76, 0.1);
+  border-color: var(--gold);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.5;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, transparent, var(--gold));
+  animation: scroll-pulse 2s infinite;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+/* ===== SECTION BASE ===== */
+section { padding: 6rem 2rem; }
+
+.section-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 5rem;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.2rem;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.section-title em { font-style: italic; color: var(--gold); }
+
+.section-desc {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(250, 247, 240, 0.6);
+}
+
+/* ===== TEMPLATES SECTION ===== */
+.templates-section {
+  background: #0F0C06;
+}
+
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.template-card {
+  position: relative;
+  background: rgba(201, 168, 76, 0.04);
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  text-decoration: none;
+  display: block;
+}
+
+.template-card:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(201, 168, 76, 0.08);
+}
+
+.template-preview {
+  height: 240px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Individual template preview backgrounds */
+.tpl-royal-envelope { background: linear-gradient(135deg, #1a0f02 0%, #2d1a05 50%, #1a0f02 100%); }
+.tpl-cinematic { background: linear-gradient(160deg, #080808 0%, #1a1018 50%, #080808 100%); }
+.tpl-storybook { background: linear-gradient(135deg, #0d1520 0%, #1a2535 50%, #0d1520 100%); }
+.tpl-temple { background: linear-gradient(135deg, #1a0808 0%, #2d0f0f 50%, #1a0808 100%); }
+.tpl-save-floral { background: linear-gradient(135deg, #120d18 0%, #1e1528 50%, #120d18 100%); }
+.tpl-save-minimal { background: linear-gradient(160deg, #0a0a0a 0%, #141414 100%); }
+.tpl-save-golden { background: linear-gradient(135deg, #0f0c02 0%, #1a1505 50%, #0f0c02 100%); }
+
+.tpl-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Royal Envelope Preview */
+.env-preview {
+  width: 180px;
+  height: 120px;
+  position: relative;
+}
+
+.env-body {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #C9A84C22, #C9A84C11);
+  border: 1px solid rgba(201, 168, 76, 0.5);
+  border-radius: 2px;
+}
+
+.env-flap-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-left: 90px solid transparent;
+  border-right: 90px solid transparent;
+  border-top: 55px solid rgba(201, 168, 76, 0.2);
+  transform-origin: top;
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.template-card:hover .env-flap-top { transform: rotateX(-180deg); }
+
+.env-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  color: var(--gold);
+  background: rgba(26,18,8,0.8);
+}
+
+/* Cinematic Preview */
+.cinema-preview {
+  width: 200px;
+  text-align: center;
+}
+
+.cinema-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.6), transparent);
+  margin: 8px 0;
+}
+
+.cinema-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(201,168,76,0.9);
+  letter-spacing: 0.05em;
+}
+
+.cinema-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.4em;
+  color: rgba(250,247,240,0.4);
+  text-transform: uppercase;
+}
+
+/* Storybook Preview */
+.story-book {
+  width: 150px;
+  height: 120px;
+  position: relative;
+}
+
+.book-page {
+  position: absolute;
+  top: 0;
+  width: 73px;
+  height: 120px;
+  border: 1px solid rgba(100,140,200,0.3);
+  background: linear-gradient(180deg, rgba(30,50,80,0.6), rgba(20,35,60,0.8));
+}
+
+.book-left { left: 0; border-right: none; transform-origin: right; }
+.book-right { right: 0; border-left: 1px solid rgba(100,140,200,0.5); transform-origin: left; }
+.template-card:hover .book-left { transform: rotateY(-20deg); }
+.template-card:hover .book-right { transform: rotateY(20deg); }
+
+.book-spine {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(100,140,200,0.5), rgba(60,100,160,0.5));
+}
+
+/* Temple Preview */
+.temple-preview {
+  width: 180px;
+  text-align: center;
+}
+
+.temple-arch {
+  width: 80px;
+  height: 100px;
+  margin: 0 auto;
+  border: 1px solid rgba(200, 80, 80, 0.5);
+  border-bottom: none;
+  border-radius: 40px 40px 0 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.temple-lamp {
+  font-size: 1.5rem;
+  animation: lamp-glow 2s infinite alternate;
+}
+
+@keyframes lamp-glow {
+  from { text-shadow: 0 0 10px rgba(255, 150, 50, 0.5); }
+  to { text-shadow: 0 0 25px rgba(255, 150, 50, 1), 0 0 40px rgba(255, 100, 0, 0.5); }
+}
+
+/* Floral Save Preview */
+.floral-preview {
+  width: 170px;
+  height: 200px;
+  position: relative;
+}
+
+.floral-circle {
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(180, 100, 180, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.floral-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(180, 100, 180, 0.15);
+  animation: ring-rotate 8s linear infinite;
+}
+
+@keyframes ring-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.floral-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: rgba(200, 150, 200, 0.8);
+  text-align: center;
+  letter-spacing: 0.05em;
+  position: relative;
+  z-index: 1;
+}
+
+/* Minimal Save Preview */
+.minimal-preview {
+  width: 200px;
+  text-align: center;
+}
+
+.minimal-date-box {
+  display: inline-block;
+  border: 1px solid rgba(250,247,240,0.15);
+  padding: 1rem 1.5rem;
+  position: relative;
+}
+
+.minimal-date-box::before, .minimal-date-box::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(250,247,240,0.4);
+}
+
+.minimal-date-box::before { top: -4px; left: -4px; border-right: none; border-bottom: none; }
+.minimal-date-box::after { bottom: -4px; right: -4px; border-left: none; border-top: none; }
+
+.minimal-month { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.3em; color: rgba(250,247,240,0.4); text-transform: uppercase; }
+.minimal-day { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: rgba(250,247,240,0.9); line-height: 1; }
+
+/* Golden Save Preview */
+.golden-save {
+  width: 190px;
+  text-align: center;
+}
+
+.golden-ornament {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2.5rem;
+  color: var(--gold);
+  opacity: 0.6;
+  line-height: 1;
+  animation: golden-pulse 3s ease-in-out infinite;
+}
+
+@keyframes golden-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+.golden-save-text {
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Template Card Info */
+.template-info {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+.template-category {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+
+.template-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 0.4rem;
+}
+
+.template-desc {
+  font-size: 0.8rem;
+  color: rgba(250, 247, 240, 0.5);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.template-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  color: rgba(201, 168, 76, 0.7);
+}
+
+/* ===== FEATURES ===== */
+.features-section { background: #080500; }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  padding: 2rem;
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  background: rgba(201, 168, 76, 0.02);
+  transition: all 0.4s;
+}
+
+.feature-card:hover {
+  border-color: rgba(201, 168, 76, 0.25);
+  background: rgba(201, 168, 76, 0.05);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+}
+
+.feature-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  color: var(--cream);
+  margin-bottom: 0.8rem;
+}
+
+.feature-text {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(250, 247, 240, 0.5);
+}
+
+/* ===== HOW IT WORKS ===== */
+.workflow-section { background: #0F0C06; }
+
+.workflow-steps {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.workflow-line {
+  position: absolute;
+  left: 36px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+  opacity: 0.2;
+}
+
+.workflow-step {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.step-num {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  background: var(--ink);
+  position: relative;
+  z-index: 1;
+}
+
+.step-content { padding-top: 1rem; }
+
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+
+.step-desc {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(250, 247, 240, 0.5);
+}
+
+/* ===== PRICING ===== */
+.pricing-section { background: #080500; }
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.pricing-card {
+  padding: 2.5rem;
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  background: rgba(201, 168, 76, 0.02);
+  transition: all 0.4s;
+  position: relative;
+}
+
+.pricing-card.featured {
+  border-color: rgba(201, 168, 76, 0.4);
+  background: rgba(201, 168, 76, 0.06);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: var(--ink);
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  padding: 0.3rem 1rem;
+  text-transform: uppercase;
+}
+
+.pricing-tier {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.pricing-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  color: var(--cream);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-price sup {
+  font-size: 1.5rem;
+  vertical-align: super;
+}
+
+.pricing-period {
+  font-size: 0.8rem;
+  color: rgba(250, 247, 240, 0.4);
+  margin-bottom: 2rem;
+}
+
+.pricing-features {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.pricing-features li {
+  font-size: 0.85rem;
+  color: rgba(250, 247, 240, 0.65);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pricing-features li::before {
+  content: '✦';
+  color: var(--gold);
+  font-size: 0.6rem;
+  flex-shrink: 0;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #030200;
+  padding: 4rem 2rem 2rem;
+  border-top: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand {
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.footer-about {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(250, 247, 240, 0.4);
+}
+
+.footer-col-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.footer-links a {
+  font-size: 0.82rem;
+  color: rgba(250, 247, 240, 0.4);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover { color: var(--gold); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(201, 168, 76, 0.06);
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(250, 247, 240, 0.25);
+}
+
+.footer-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: rgba(201, 168, 76, 0.4);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  
+  .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+  .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+}
+
+/* ===== DIVIDERS ===== */
+.ornamental-divider {
+  text-align: center;
+  padding: 2rem 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: rgba(201, 168, 76, 0.25);
+  letter-spacing: 1em;
+}
+
+/* ===== STATS ===== */
+.stats-bar {
+  background: rgba(201, 168, 76, 0.05);
+  border-top: 1px solid rgba(201, 168, 76, 0.1);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+  padding: 2.5rem 2rem;
+}
+
+.stats-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.stat-item { text-align: center; }
+
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--gold);
+  display: block;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(250, 247, 240, 0.4);
+  margin-top: 0.3rem;
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">CHARAN<span> LABS</span></a>
+  <ul class="nav-links">
+    <li><a href="#templates">Templates</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="order.html">Order</a></li>
+    <li><a href="shop.html">Shop Login</a></li>
+  </ul>
+  <!--<a href="shop.html" class="nav-cta">Shop Login</a>-->
+  <a href="order.html" class="nav-cta">Submit Order</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-particles" id="particles"></div>
+  
+  <div style="position: relative; z-index: 1;">
+    <div class="hero-ornament">✦ ✦ ✦</div>
+    <div class="hero-badge">Premium Digital Wedding Invitations</div>
+    <h1 class="hero-title">
+      Craft <em>Timeless</em><br>Wedding Moments
+    </h1>
+    <p class="hero-subtitle">Velocity Card Engine · Charan Labs Solution</p>
+    <p class="hero-desc">
+      Bespoke digital wedding invitations crafted with cinematic animations, 
+      royal aesthetics, and 3D effects. Designed for print shops, Xerox centers, 
+      and wedding studios across India.
+    </p>
+    <div class="hero-actions">
+      <a href="order.html" class="btn-primary">Submit Your Order</a>
+      <a href="#templates" class="btn-outline">View Templates</a>
+    </div>
+  </div>
+  
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num" data-count="500">0</span>
+      <span class="stat-label">Orders Delivered</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-count="2">0</span>
+      <span class="stat-label">Premium Templates</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-count="6">0</span>
+      <span class="stat-label">Languages Supported</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-count="98">0</span>
+      <span class="stat-label">Customer Satisfaction %</span>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATES -->
+<section id="templates" class="templates-section">
+  <div class="section-header">
+    <div class="section-tag">✦ Our Collection</div>
+    <h2 class="section-title">Two <em>Signature</em> Templates</h2>
+    <p class="section-desc">Each template is a bespoke experience — crafted with cinematic precision, 3D animations, and luxury aesthetics that transform a digital invite into a keepsake.</p>
+  </div>
+
+  <div class="templates-grid">
+
+    <!-- 1. Royal Envelope -->
+    <a href="templates/royal-envelope.html" class="template-card">
+      <div class="template-preview tpl-royal-envelope">
+        <div class="tpl-inner">
+          <div class="env-preview">
+            <div class="env-body"></div>
+            <div class="env-flap-top"></div>
+            <div class="env-seal">✦</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-info">
+        <div class="template-category">Wedding · Format A</div>
+        <div class="template-name">Royal Envelope</div>
+        <div class="template-desc">3D envelope unfolds in real-time. Wax seal breaks, flaps open, invitation slides out into a page-flip book. Pure luxury.</div>
+        <div class="template-tags">
+          <span class="tag">3D Flip</span>
+          <span class="tag">Envelope</span>
+          <span class="tag">Page Flip</span>
+          <span class="tag">Royal Gold</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- 2. Cinematic Scroll -->
+    <a href="templates/cinematic-scroll.html" class="template-card">
+      <div class="template-preview tpl-cinematic">
+        <div class="tpl-inner">
+          <div class="cinema-preview">
+            <div class="cinema-sub">An Invitation To The Wedding Of</div>
+            <div class="cinema-line"></div>
+            <div class="cinema-title">Priya & Arjun</div>
+            <div class="cinema-line"></div>
+            <div class="cinema-sub">December · 2025</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-info">
+        <div class="template-category">Wedding · Format B</div>
+        <div class="template-name">Cinematic Scroll</div>
+        <div class="template-desc">Movie-like vertical journey. Each section enters with GSAP parallax — epic reveal of couple names, story, venue, countdown.</div>
+        <div class="template-tags">
+          <span class="tag">GSAP</span>
+          <span class="tag">Parallax</span>
+          <span class="tag">Cinematic</span>
+          <span class="tag">Luxury Black</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="features-section">
+  <div class="section-header">
+    <div class="section-tag">✦ Platform Power</div>
+    <h2 class="section-title">Built for <em>Scale</em></h2>
+    <p class="section-desc">Every feature crafted for professional print shops and wedding studios running at full capacity.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🎬</div>
+      <div class="feature-title">Cinematic 3D Animations</div>
+      <p class="feature-text">GSAP-powered entrance animations, envelope reveals, page flips, parallax scrolling, and particle effects. Every template feels like a film experience.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <div class="feature-title">Mobile-First QR Preview</div>
+      <p class="feature-text">Admin generates QR code before publishing. Test on real mobile devices, verify photo positioning, animations, and text spacing before client sees anything.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-title">Protected Templates</div>
+      <p class="feature-text">Supabase RLS policies, signed URLs, watermarked previews. Customers never see template source. Draft → Preview → Publish workflow with full access control.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <div class="feature-title">6 Indian Languages</div>
+      <p class="feature-text">English, Telugu, Hindi, Tamil, Kannada, Malayalam — all Unicode supported. Mix languages in same invitation (Bride in Telugu, Groom in English).</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎨</div>
+      <div class="feature-title">Canva-Style Visual Editor</div>
+      <p class="feature-text">Drag, resize, rotate, duplicate, snap guides, layer system, undo/redo, auto-save every 3 seconds. Full Cropper.js photo editing with filters.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💌</div>
+      <div class="feature-title">WhatsApp Sharing</div>
+      <p class="feature-text">One-click WhatsApp sharing with pre-built invitation link. Guests RSVP directly in the invitation. Wish wall, photo uploads, attendance tracking.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Full Analytics Dashboard</div>
+      <p class="feature-text">Track invitation views, unique visitors, QR scans, RSVP count, device types, traffic sources. Earnings dashboard with monthly/yearly revenue charts.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💿</div>
+      <div class="feature-title">Memory Album Mode</div>
+      <p class="feature-text">After the wedding, the same URL transforms into a permanent digital keepsake — wedding gallery, reception photos, guest wishes, memory timeline.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="workflow-section">
+  <div class="section-header">
+    <div class="section-tag">✦ The Process</div>
+    <h2 class="section-title">How it <em>Works</em></h2>
+    <p class="section-desc">From submission to publishing — a seamless, quality-controlled workflow designed for busy print shops.</p>
+  </div>
+
+  <div class="workflow-steps">
+    <div class="workflow-line"></div>
+    
+    <div class="workflow-step">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <div class="step-title">Shop Submits Order</div>
+        <p class="step-desc">Print shop fills out the order form with couple details, wedding info, venue, and uploads bride/groom/couple photos. All securely stored in Supabase.</p>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <div class="step-title">Admin Reviews & Edits</div>
+        <p class="step-desc">Platform owner reviews photos, selects best images, adjusts positioning using the visual editor, applies filters, typography, and animation settings.</p>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <div class="step-title">QR Mobile Preview</div>
+        <p class="step-desc">Admin generates a private QR preview link. Scanned on real mobile devices to verify quality, animations, and responsiveness before any client sees it.</p>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <div class="step-title">Payment & Publish</div>
+        <p class="step-desc">Once payment is verified, invitation is published to a permanent URL. Shop receives the link and QR code to share via WhatsApp with the couple's guests.</p>
+      </div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-num">05</div>
+      <div class="step-content">
+        <div class="step-title">Live & Memory Mode</div>
+        <p class="step-desc">Invitation is live for guests to view, RSVP, and send wishes. After the wedding, it transforms into a permanent memory album with all photos and wishes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="pricing-section">
+  <div class="section-header">
+    <div class="section-tag">✦ Packages</div>
+    <h2 class="section-title">Simple <em>Pricing</em></h2>
+    <p class="section-desc">For print shops, Xerox centers, and wedding studios. Volume pricing available.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-tier">Essential</div>
+      <div class="pricing-price"><sup>₹</sup>999</div>
+      <div class="pricing-period">per invitation</div>
+      <ul class="pricing-features">
+        <li>1 Template (any format)</li>
+        <li>Bride + Groom + Couple photos</li>
+        <li>Full animation package</li>
+        <li>WhatsApp sharing</li>
+        <li>RSVP system</li>
+        <li>Live for 6 months</li>
+      </ul>
+      <a href="order.html" class="btn-primary" style="display: block; text-align: center;">Order Now</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-badge">Most Popular</div>
+      <div class="pricing-tier">Premium</div>
+      <div class="pricing-price"><sup>₹</sup>1,799</div>
+      <div class="pricing-period">per invitation</div>
+      <ul class="pricing-features">
+        <li>All available templates</li>
+        <li>All photo categories</li>
+        <li>Background music</li>
+        <li>Guest wishes wall</li>
+        <li>Analytics dashboard</li>
+        <li>Memory album included</li>
+        <li>Live for 1 year</li>
+      </ul>
+      <a href="order.html" class="btn-primary" style="display: block; text-align: center;">Order Now</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-tier">Studio Plan</div>
+      <div class="pricing-price"><sup>₹</sup>9,999</div>
+      <div class="pricing-period">per month · 10 invitations</div>
+      <ul class="pricing-features">
+        <li>10 invitations / month</li>
+        <li>Branded subdomain</li>
+        <li>Priority processing</li>
+        <li>Dedicated support</li>
+        <li>Custom color themes</li>
+        <li>Revenue dashboard</li>
+        <li>Bulk WhatsApp sharing</li>
+      </ul>
+      <a href="order.html" class="btn-outline" style="display: block; text-align: center;">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<div class="ornamental-divider">✦ ✦ ✦</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">CHARAN LABS SOLUTION</div>
+        <p class="footer-about">Premium digital wedding invitations powered by the Velocity Card Engine. Serving print shops, Xerox centers, and wedding studios across India with luxury digital experiences.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#templates">Templates</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="shop.html">Shop Login</a></li>
+          <li><a href="order.html">Submit Order</a></li>
+          <li><a href="admin/login.html">Admin Login</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Templates</div>
+        <ul class="footer-links">
+          <li><a href="templates/royal-envelope.html">Royal Envelope</a></li>
+          <li><a href="templates/cinematic-scroll.html">Cinematic Scroll</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <li><a href="mailto:charankarthik366@gmail.com">Email Us</a></li>
+          <li><a href="#">WhatsApp</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Charan Labs Solution. All rights reserved. Built by Pagadala Charan Karthik.</div>
+      <div class="footer-tagline">Every love story deserves a masterpiece</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Particles
+const container = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.animationDelay = Math.random() * 8 + 's';
+  p.style.animationDuration = (6 + Math.random() * 6) + 's';
+  container.appendChild(p);
+}
+
+// Hero animations
+gsap.timeline({ delay: 0.3 })
+  .to('.hero-badge', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 0)
+  .to('h1.hero-title', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, 0.2)
+  .to('.hero-subtitle', { opacity: 1, duration: 0.8 }, 0.5)
+  .to('.hero-desc', { opacity: 1, y: 0, duration: 0.8 }, 0.6)
+  .to('.hero-actions', { opacity: 1, duration: 0.8 }, 0.8);
+
+gsap.set(['h1.hero-title', '.hero-badge', '.hero-desc', '.hero-actions'], { y: 30 });
+
+// Stat counters
+document.querySelectorAll('.stat-num[data-count]').forEach(el => {
+  const target = parseInt(el.dataset.count);
+  ScrollTrigger.create({
+    trigger: el,
+    onEnter: () => {
+      gsap.to({ val: 0 }, {
+        val: target,
+        duration: 2,
+        ease: 'power2.out',
+        onUpdate: function() { el.textContent = Math.round(this.targets()[0].val) + (target >= 98 ? '%' : '+'); }
+      });
+    },
+    once: true
+  });
+});
+
+// Template cards scroll
+gsap.utils.toArray('.template-card').forEach((card, i) => {
+  gsap.fromTo(card, 
+    { opacity: 0, y: 40 },
+    { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+      scrollTrigger: { trigger: card, start: 'top 85%', once: true },
+      delay: (i % 3) * 0.1
+    }
+  );
+});
+
+// Feature cards
+gsap.utils.toArray('.feature-card').forEach((card, i) => {
+  gsap.fromTo(card,
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+      scrollTrigger: { trigger: card, start: 'top 85%', once: true },
+      delay: (i % 4) * 0.1
+    }
+  );
+});
+
+// Workflow steps
+gsap.utils.toArray('.workflow-step').forEach((step, i) => {
+  gsap.fromTo(step,
+    { opacity: 0, x: -30 },
+    { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out',
+      scrollTrigger: { trigger: step, start: 'top 85%', once: true },
+      delay: i * 0.1
+    }
+  );
+});
+</script>
+</body>
+</html>

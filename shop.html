@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Portal — Charan Labs Solution</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Cinzel:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--ink:#1A1208;--cream:#FAF7F0;--muted:rgba(250,247,240,0.5);--border:rgba(201,168,76,0.15);--surface:rgba(201,168,76,0.04);--success:#4CAF82;--error:#C94C4C}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--cream);min-height:100vh}
+
+.header{background:#0D0900;border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:'Cinzel',serif;font-size:0.95rem;letter-spacing:0.1em;color:var(--gold)}
+.header-actions{display:flex;gap:1rem;align-items:center}
+
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:80vh;padding:2rem}
+.login-card{width:400px;padding:2.5rem;border:1px solid var(--border);background:var(--surface);text-align:center}
+.login-card h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--gold);margin-bottom:0.3rem}
+.login-card p{font-size:0.78rem;color:var(--muted);margin-bottom:2rem}
+.login-input{width:100%;background:rgba(250,247,240,0.05);border:1px solid var(--border);color:var(--cream);padding:0.75rem 1rem;font-size:0.88rem;margin-bottom:1rem;outline:none}
+.login-input:focus{border-color:var(--gold)}
+.login-btn{width:100%;padding:0.85rem;background:var(--gold);border:none;color:var(--ink);font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.15em;cursor:pointer}
+.login-btn:hover{filter:brightness(1.1)}
+.login-divider{font-size:0.72rem;color:var(--muted);margin:1rem 0}
+.register-link{font-size:0.78rem;color:var(--gold);cursor:pointer;text-decoration:underline}
+
+.portal-body{max-width:1000px;margin:0 auto;padding:2rem 1rem 4rem;display:none}
+.portal-body.show{display:block}
+
+.welcome-bar{background:rgba(201,168,76,0.06);border:1px solid var(--border);padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between}
+.welcome-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--cream)}
+.plan-tag{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.3rem 0.8rem;text-transform:uppercase}
+
+.portal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.pstat{background:rgba(201,168,76,0.04);border:1px solid var(--border);padding:1rem;text-align:center}
+.pstat-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--gold)}
+.pstat-label{font-size:0.62rem;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;margin-top:0.2rem}
+
+.section-title{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
+
+.order-card{background:var(--surface);border:1px solid var(--border);padding:1.2rem;margin-bottom:1rem;transition:border-color 0.2s}
+.order-card:hover{border-color:rgba(201,168,76,0.3)}
+.order-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.5rem}
+.order-couple{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--cream)}
+.order-id{font-size:0.65rem;letter-spacing:0.12em;color:var(--gold);font-family:monospace}
+.order-meta{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.75rem;color:var(--muted);margin-bottom:0.8rem}
+.order-meta span{display:flex;align-items:center;gap:0.3rem}
+.order-actions{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.8rem}
+
+.badge{display:inline-block;font-size:0.6rem;letter-spacing:0.08em;padding:0.2rem 0.6rem;text-transform:uppercase}
+.badge.submitted{background:rgba(58,100,200,0.2);color:#7799EE}
+.badge.pending_review{background:rgba(200,150,58,0.2);color:#E8A53A}
+.badge.qr_preview{background:rgba(150,58,200,0.2);color:#BB77EE}
+.badge.approved,.badge.payment_verified{background:rgba(76,175,200,0.2);color:#4CAFC8}
+.badge.published{background:rgba(76,175,82,0.3);color:#4CAF82}
+.badge.archived{background:rgba(120,120,120,0.2);color:#888}
+
+.action-btn{padding:0.45rem 1rem;font-size:0.72rem;letter-spacing:0.08em;border:1px solid var(--border);background:transparent;color:var(--cream);cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;text-align:center}
+.action-btn:hover{border-color:var(--gold);color:var(--gold)}
+.action-btn.primary{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.action-btn.primary:hover{filter:brightness(1.1)}
+.action-btn.whatsapp{background:#25D366;border-color:#25D366;color:#fff}
+
+.qr-modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100;display:none;align-items:center;justify-content:center}
+.qr-modal.show{display:flex}
+.qr-inner{background:#0D0900;border:1px solid var(--border);padding:2rem;text-align:center;max-width:320px;width:90%}
+.qr-title{font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:1rem}
+.qr-close{margin-top:1rem;cursor:pointer;font-size:0.8rem;color:var(--muted);text-decoration:underline}
+
+.new-order-btn{
+  display:block;text-align:center;background:linear-gradient(135deg,var(--gold),#E8C97A,var(--gold));
+  color:var(--ink);padding:1rem;font-family:'Cinzel',serif;font-size:0.85rem;
+  letter-spacing:0.15em;text-decoration:none;margin-bottom:2rem;
+}
+.new-order-btn:hover{filter:brightness(1.1)}
+
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(12,9,0,0.95);border:1px solid var(--gold);color:var(--cream);padding:0.7rem 1.5rem;font-size:0.82rem;z-index:200;transition:transform 0.3s;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+.progress-steps{display:flex;gap:0;margin-bottom:2rem;overflow-x:auto}
+.progress-step{flex:1;min-width:80px;text-align:center;padding:0.5rem;position:relative}
+.progress-step::after{content:'';position:absolute;top:12px;right:0;width:100%;height:1px;background:rgba(201,168,76,0.1);z-index:0}
+.progress-step:last-child::after{display:none}
+.step-dot{width:24px;height:24px;border:1px solid rgba(201,168,76,0.25);border-radius:50%;margin:0 auto 0.4rem;display:flex;align-items:center;justify-content:center;font-size:0.6rem;position:relative;z-index:1;background:var(--ink)}
+.step-dot.done{background:rgba(76,175,130,0.2);border-color:#4CAF82;color:#4CAF82}
+.step-dot.active{background:rgba(201,168,76,0.15);border-color:var(--gold);color:var(--gold)}
+.progress-step .step-label{font-size:0.58rem;letter-spacing:0.05em;color:var(--muted);text-transform:uppercase}
+
+@media(max-width:600px){
+  .portal-stats{grid-template-columns:1fr 1fr}
+  .header{padding:0.8rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">✦ CHARAN LABS · SHOP PORTAL</div>
+  <div class="header-actions">
+    <span id="shop_name_tag" style="font-size:0.78rem;color:var(--muted)"></span>
+    <span id="logout_link" style="font-size:0.72rem;color:var(--error);cursor:pointer;text-decoration:underline;display:none" onclick="shopLogout()">Logout</span>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card" id="loginCard">
+    <h2>Shop Login</h2>
+    <p>Track your orders and download QR codes</p>
+    <input class="login-input" type="email" id="shop_email" placeholder="Your email address" onkeydown="if(event.key==='Enter')doShopLogin()">
+    <input class="login-input" type="text" id="shop_name_input" placeholder="Shop name (for first-time login)">
+    <button class="login-btn" onclick="doShopLogin()">Access My Orders</button>
+    <div class="login-divider">or</div>
+    <a href="order.html" class="register-link">Submit a New Order</a>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div class="portal-body" id="portalBody">
+  
+  <a href="order.html" class="new-order-btn">✦ Submit New Order</a>
+
+  <div class="welcome-bar">
+    <div>
+      <div class="welcome-name" id="portal_shop_name">—</div>
+      <div style="font-size:0.72rem;color:var(--muted);margin-top:0.2rem" id="portal_email">—</div>
+    </div>
+    <div class="plan-tag" id="portal_plan">—</div>
+  </div>
+
+  <div class="portal-stats">
+    <div class="pstat"><div class="pstat-val" id="ps_total">0</div><div class="pstat-label">Total Orders</div></div>
+    <div class="pstat"><div class="pstat-val" id="ps_active">0</div><div class="pstat-label">Active</div></div>
+    <div class="pstat"><div class="pstat-val" id="ps_published">0</div><div class="pstat-label">Published</div></div>
+    <div class="pstat"><div class="pstat-val" id="ps_views">0</div><div class="pstat-label">Total Views</div></div>
+  </div>
+
+  <div class="section-title">Your Orders</div>
+  <div id="orders_list">
+    <div style="text-align:center;padding:3rem;color:var(--muted)">Loading your orders...</div>
+  </div>
+
+</div>
+
+<!-- QR MODAL -->
+<div class="qr-modal" id="qrModal">
+  <div class="qr-inner">
+    <div class="qr-title" id="qr_modal_title">QR CODE</div>
+    <img id="qr_modal_img" src="" style="width:220px;height:220px;border:2px solid rgba(201,168,76,0.3)">
+    <div style="margin-top:1rem;font-size:0.75rem;color:var(--muted);word-break:break-all" id="qr_modal_url"></div>
+    <button onclick="downloadQR()" style="margin-top:1rem;background:var(--gold);border:none;color:var(--ink);padding:0.6rem 1.5rem;font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.1em;cursor:pointer">Download QR</button>
+    <div class="qr-close" onclick="closeQR()">Close</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+<script src="supabase-app.js"></script>
+</body>
+</html>

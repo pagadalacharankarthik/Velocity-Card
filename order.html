@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Order — Charan Labs Solution</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Cinzel:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8C97A; --ink: #1A1208;
+  --cream: #FAF7F0; --muted: rgba(250,247,240,0.5);
+  --surface: rgba(201,168,76,0.05); --border: rgba(201,168,76,0.18);
+  --success: #4CAF82; --error: #C94C4C;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--ink); color: var(--cream); min-height: 100vh; }
+
+/* HEADER */
+.form-header {
+  text-align: center; padding: 3rem 2rem 2rem;
+  background: linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%);
+  border-bottom: 1px solid var(--border);
+}
+.form-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--gold); }
+.form-header p { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; letter-spacing: 0.05em; }
+
+/* PLAN SELECTOR */
+.plan-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 900px; margin: 0 auto 2rem; padding: 0 1rem; }
+.plan-card {
+  border: 1px solid var(--border); padding: 1.5rem;
+  cursor: pointer; transition: all 0.3s; text-align: center; position: relative;
+  background: var(--surface);
+}
+.plan-card.selected { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+.plan-card.popular::before {
+  content: 'POPULAR'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: var(--ink); font-size: 0.6rem; letter-spacing: 0.2em;
+  padding: 0.2rem 0.8rem; font-family: 'Cinzel', serif;
+}
+.plan-name { font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold); margin-bottom: 0.5rem; }
+.plan-price { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--cream); }
+.plan-price sup { font-size: 1rem; vertical-align: super; }
+.plan-features { margin-top: 0.8rem; font-size: 0.72rem; color: var(--muted); line-height: 1.8; }
+.plan-features b { color: var(--gold); }
+
+/* FORM LAYOUT */
+.form-body { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+.form-section {
+  margin-bottom: 2.5rem; border: 1px solid var(--border);
+  background: var(--surface); overflow: hidden;
+}
+.section-title {
+  padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em;
+  color: var(--gold); display: flex; align-items: center; gap: 0.8rem;
+}
+.section-num {
+  width: 24px; height: 24px; border: 1px solid rgba(201,168,76,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; border-radius: 50%; flex-shrink: 0;
+}
+.section-body { padding: 1.5rem; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+.form-grid.full { grid-template-columns: 1fr; }
+
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.field label span { color: var(--error); margin-left: 2px; }
+.field input, .field select, .field textarea {
+  background: rgba(250,247,240,0.04); border: 1px solid rgba(201,168,76,0.15);
+  color: var(--cream); padding: 0.7rem 0.9rem; font-family: 'Inter', sans-serif;
+  font-size: 0.88rem; outline: none; transition: border-color 0.2s; width: 100%;
+  border-radius: 2px;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+.field input::placeholder { color: rgba(250,247,240,0.25); }
+.field select option { background: #1a1208; color: var(--cream); }
+.field textarea { resize: vertical; min-height: 80px; }
+.field-hint { font-size: 0.7rem; color: rgba(250,247,240,0.3); line-height: 1.5; margin-top: 0.2rem; }
+
+/* PHOTO UPLOAD */
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.photo-upload-box {
+  border: 2px dashed rgba(201,168,76,0.25); padding: 1.5rem;
+  text-align: center; cursor: pointer; transition: all 0.3s; position: relative;
+  background: rgba(201,168,76,0.02); min-height: 160px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem;
+}
+.photo-upload-box:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+.photo-upload-box.has-photo { border-style: solid; border-color: rgba(201,168,76,0.4); }
+.photo-upload-box.required-photo { border-color: rgba(201,168,76,0.5); }
+.upload-icon { font-size: 2rem; opacity: 0.6; }
+.upload-label { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); }
+.upload-spec { font-size: 0.65rem; color: var(--muted); line-height: 1.6; }
+.upload-required-badge {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(201,168,76,0.2); color: var(--gold);
+  font-size: 0.55rem; letter-spacing: 0.1em; padding: 2px 6px;
+}
+.photo-preview {
+  width: 100%; height: 120px; object-fit: cover;
+  border: 1px solid rgba(201,168,76,0.3); margin-bottom: 0.5rem;
+}
+.photo-status { font-size: 0.7rem; padding: 2px 8px; border-radius: 2px; }
+.photo-status.ok { background: rgba(76,175,130,0.2); color: #4CAF82; }
+.photo-status.err { background: rgba(201,76,76,0.2); color: #C94C4C; }
+.photo-progress {
+  position: absolute; bottom: 0; left: 0; height: 3px;
+  background: var(--gold); transition: width 0.3s; width: 0;
+}
+input[type="file"] { display: none; }
+
+/* PAYMENT SECTION */
+.payment-info {
+  background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.25);
+  padding: 1.5rem; text-align: center;
+}
+.upi-amount { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: var(--gold); }
+.upi-id { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.15em; color: var(--cream); margin: 0.5rem 0; }
+.upi-note { font-size: 0.75rem; color: var(--muted); line-height: 1.6; }
+.qr-placeholder {
+  width: 120px; height: 120px; margin: 1rem auto;
+  border: 2px solid rgba(201,168,76,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; color: var(--muted); text-align: center;
+}
+
+/* SUBMIT */
+.submit-btn {
+  width: 100%; padding: 1.2rem;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+  border: none; color: var(--ink); font-family: 'Cinzel', serif;
+  font-size: 0.9rem; letter-spacing: 0.2em; cursor: pointer;
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.submit-btn:hover { filter: brightness(1.1); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* SUCCESS STATE */
+.success-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(26,18,8,0.95);
+  z-index: 100; align-items: center; justify-content: center; text-align: center; padding: 2rem;
+}
+.success-overlay.show { display: flex; }
+.success-box { max-width: 500px; }
+.success-icon { font-size: 4rem; margin-bottom: 1rem; }
+.success-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--gold); margin-bottom: 1rem; }
+.success-id { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 1.5rem; background: rgba(201,168,76,0.1); padding: 0.5rem 1rem; display: inline-block; }
+.success-msg { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: rgba(26,18,8,0.95); border: 1px solid var(--gold);
+  color: var(--cream); padding: 0.8rem 1.5rem; font-size: 0.85rem;
+  z-index: 200; transition: transform 0.3s; white-space: nowrap;
+  max-width: 90vw;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { border-color: var(--error); }
+
+/* LOADER */
+.loader { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(26,18,8,0.3); border-top-color: var(--ink); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid.three { grid-template-columns: 1fr 1fr; }
+  .plan-selector { grid-template-columns: 1fr; }
+  .photo-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="form-header">
+  <h1>✦ Submit Your Order</h1>
+  <p>Charan Labs Solution · Premium Digital Wedding Invitations · Powered by Velocity Card Engine</p>
+</div>
+
+<!-- PLAN SELECTOR -->
+<div style="max-width:900px;margin:2rem auto 0;padding:0 1rem;">
+  <div style="text-align:center;margin-bottom:1.2rem;">
+    <div style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;color:var(--gold);margin-bottom:0.5rem;">STEP 1 · SELECT YOUR PLAN</div>
+  </div>
+  <div class="plan-selector">
+    <div class="plan-card" data-plan="basic" onclick="selectPlan('basic',this)">
+      <div class="plan-name">Basic</div>
+      <div class="plan-price"><sup>₹</sup>499</div>
+      <div class="plan-features">
+        <div>3 Templates</div>
+        <div>3 Photos (Bride+Groom+Couple)</div>
+        <div>Full Animations</div>
+        <div>WhatsApp Sharing</div>
+        <div>RSVP System</div>
+        <div><b>Valid 90 days</b></div>
+      </div>
+    </div>
+    <div class="plan-card popular" data-plan="standard" onclick="selectPlan('standard',this)">
+      <div class="plan-name">Standard</div>
+      <div class="plan-price"><sup>₹</sup>999</div>
+      <div class="plan-features">
+        <div>All 10 Templates</div>
+        <div>Up to 8 Photos</div>
+        <div>Background Music</div>
+        <div>Guest Wishes Wall</div>
+        <div>Analytics Dashboard</div>
+        <div><b>Valid 180 days</b></div>
+      </div>
+    </div>
+    <div class="plan-card" data-plan="premium" onclick="selectPlan('premium',this)">
+      <div class="plan-name">Premium</div>
+      <div class="plan-price"><sup>₹</sup>1499</div>
+      <div class="plan-features">
+        <div>All Templates + Custom</div>
+        <div>Up to 20 Photos + Video</div>
+        <div>Memory Album Mode</div>
+        <div>Full Analytics</div>
+        <div>Priority Processing</div>
+        <div><b>Valid 365 days</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-body">
+  <form id="orderForm">
+  <input type="hidden" id="selected_plan" name="plan" value="">
+
+  <!-- SHOP DETAILS -->
+  <div class="form-section">
+    <div class="section-title"><div class="section-num">1</div>Shop & Contact Details</div>
+    <div class="section-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>Shop / Studio Name <span>*</span></label>
+          <input type="text" name="shop_name" id="shop_name" placeholder="e.g., Lakshmi Print Center" required>
+        </div>
+        <div class="field">
+          <label>Contact Person <span>*</span></label>
+          <input type="text" name="contact_name" id="contact_name" placeholder="Your full name" required>
+        </div>
+        <div class="field">
+          <label>Phone Number <span>*</span></label>
+          <input type="tel" name="phone" id="phone" placeholder="+91 99999 99999" required>
+        </div>
+        <div class="field">
+          <label>WhatsApp Number</label>
+          <input type="tel" name="whatsapp" id="whatsapp" placeholder="Same as phone if same">
+        </div>
+        <div class="field">
+          <label>Email Address <span>*</span></label>
+          <input type="email" name="email" id="email" placeholder="yourshop@email.com" required>
+        </div>
+        <div class="field">
+          <label>Language of Invitation</label>
+          <select name="language" id="language">
+            <option value="English">English</option>
+            <option value="Telugu">Telugu (తెలుగు)</option>
+            <option value="Hindi">Hindi (हिंदी)</option>
+            <option value="Tamil">Tamil (தமிழ்)</option>
+            <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+            <option value="Malayalam">Malayalam (മലയാളം)</option>
+            <option value="Mixed">Mixed (English + Regional)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUPLE DETAILS -->
+  <div class="form-section">
+    <div class="section-title"><div class="section-num">2</div>Couple Details</div>
+    <div class="section-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>Bride Name (English) <span>*</span></label>
+          <input type="text" name="bride_name" id="bride_name" placeholder="e.g., Priya Devi" required>
+        </div>
+        <div class="field">
+          <label>Bride Name (Regional Script)</label>
+          <input type="text" name="bride_name_regional" id="bride_name_regional" placeholder="ప్రియ దేవి / प्रिया / ...">
+          <div class="field-hint">Copy-paste in your language script for multilingual invitations</div>
+        </div>
+        <div class="field">
+          <label>Groom Name (English) <span>*</span></label>
+          <input type="text" name="groom_name" id="groom_name" placeholder="e.g., Arjun Kumar" required>
+        </div>
+        <div class="field">
+          <label>Groom Name (Regional Script)</label>
+          <input type="text" name="groom_name_regional" id="groom_name_regional" placeholder="అర్జున్ కుమార్ / अर्जुन ...">
+        </div>
+      </div>
+      <div class="form-grid three" style="margin-top:1rem;">
+        <div class="field">
+          <label>Religion / Tradition</label>
+          <select name="religion" id="religion">
+            <option value="Hindu">Hindu (Vedic)</option>
+            <option value="Hindu-Telugu">Hindu (Telugu)</option>
+            <option value="Hindu-Tamil">Hindu (Tamil / Brahmin)</option>
+            <option value="Hindu-North">Hindu (North Indian)</option>
+            <option value="Muslim">Muslim</option>
+            <option value="Christian">Christian</option>
+            <option value="Sikh">Sikh</option>
+            <option value="Jain">Jain</option>
+            <option value="Modern">Modern / Non-religious</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Template Style</label>
+          <select name="template" id="template">
+            <option value="auto">Let Admin Choose Best Fit</option>
+            <option value="royal_envelope">Royal Envelope (3D Flip)</option>
+            <option value="cinematic">Cinematic Parallax</option>
+            <option value="temple_gold">Temple Gold (Traditional)</option>
+            <option value="rose_petals">Rose Petals (Romantic)</option>
+            <option value="storybook">Premium Storybook</option>
+            <option value="minimal_dark">Minimal Dark Luxury</option>
+            <option value="starfall">Starfall Night</option>
+            <option value="south_silk">South Indian Silk</option>
+            <option value="mughal_garden">Mughal Garden</option>
+            <option value="christian_white">Christian White Chapel</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Color Theme</label>
+          <select name="color_theme" id="color_theme">
+            <option value="royal_gold">Royal Gold</option>
+            <option value="rose_gold">Rose Gold</option>
+            <option value="temple_maroon">Temple Maroon</option>
+            <option value="luxury_black">Luxury Black & Gold</option>
+            <option value="floral_pink">Floral Pink</option>
+            <option value="peacock_blue">Peacock Blue</option>
+            <option value="minimal_white">Minimal White</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEDDING DETAILS -->
+  <div class="form-section">
+    <div class="section-title"><div class="section-num">3</div>Wedding Event Details</div>
+    <div class="section-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>Wedding Date <span>*</span></label>
+          <input type="date" name="wedding_date" id="wedding_date" required>
+        </div>
+        <div class="field">
+          <label>Wedding Time</label>
+          <input type="time" name="wedding_time" id="wedding_time">
+        </div>
+        <div class="field">
+          <label>Wedding Venue Name <span>*</span></label>
+          <input type="text" name="wedding_venue" id="wedding_venue" placeholder="e.g., Sri Kalyana Mandapam" required>
+        </div>
+        <div class="field">
+          <label>Muhurtam / Auspicious Time</label>
+          <input type="text" name="muhurtam" id="muhurtam" placeholder="e.g., 9:11 AM – 11:23 AM">
+        </div>
+      </div>
+      <div class="form-grid full" style="margin-top:1rem;">
+        <div class="field">
+          <label>Venue Full Address</label>
+          <textarea name="wedding_address" id="wedding_address" placeholder="Full address with city, state, pincode..."></textarea>
+        </div>
+        <div class="field">
+          <label>Google Maps Link</label>
+          <input type="url" name="maps_link" id="maps_link" placeholder="https://maps.google.com/...">
+          <div class="field-hint">Paste the "Share" link from Google Maps for the venue location</div>
+        </div>
+      </div>
+
+      <!-- Reception -->
+      <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid var(--border);">
+        <div style="font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:1rem;text-transform:uppercase;">Reception (if separate event)</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Reception Date</label>
+            <input type="date" name="reception_date" id="reception_date">
+          </div>
+          <div class="field">
+            <label>Reception Time</label>
+            <input type="time" name="reception_time" id="reception_time">
+          </div>
+          <div class="field">
+            <label>Reception Venue Name</label>
+            <input type="text" name="reception_venue" id="reception_venue" placeholder="e.g., Taj Mahal Palace Hall">
+          </div>
+          <div class="field">
+            <label>RSVP Contact Number</label>
+            <input type="tel" name="rsvp_contact" id="rsvp_contact" placeholder="+91 99999 99999">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid full" style="margin-top:1rem;">
+        <div class="field">
+          <label>Custom Message / Invitation Text</label>
+          <textarea name="custom_message" id="custom_message" placeholder="e.g., 'With the blessings of our families, we joyfully invite you...' or paste in regional language" style="min-height:100px;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHOTO UPLOADS -->
+  <div class="form-section">
+    <div class="section-title"><div class="section-num">4</div>Photo Uploads</div>
+    <div class="section-body">
+      <!-- Required Photos -->
+      <div style="font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:1rem;text-transform:uppercase;">Required Photos</div>
+      <div class="photo-grid">
+
+        <div class="photo-upload-box required-photo" id="box_bride" onclick="triggerUpload('bride')">
+          <div class="upload-required-badge">REQUIRED</div>
+          <div id="preview_bride_wrap">
+            <div class="upload-icon">👰</div>
+            <div class="upload-label">Bride Photo</div>
+            <div class="upload-spec">
+              <b>Portrait orientation preferred</b><br>
+              Min: 800 × 1000 px<br>
+              Size: 500 KB – 5 MB<br>
+              Format: JPG / PNG / WEBP
+            </div>
+          </div>
+          <div class="photo-progress" id="prog_bride"></div>
+          <input type="file" id="file_bride" accept="image/jpeg,image/png,image/webp" onchange="handlePhotoSelect('bride',this)">
+        </div>
+
+        <div class="photo-upload-box required-photo" id="box_groom" onclick="triggerUpload('groom')">
+          <div class="upload-required-badge">REQUIRED</div>
+          <div id="preview_groom_wrap">
+            <div class="upload-icon">🤵</div>
+            <div class="upload-label">Groom Photo</div>
+            <div class="upload-spec">
+              <b>Portrait orientation preferred</b><br>
+              Min: 800 × 1000 px<br>
+              Size: 500 KB – 5 MB<br>
+              Format: JPG / PNG / WEBP
+            </div>
+          </div>
+          <div class="photo-progress" id="prog_groom"></div>
+          <input type="file" id="file_groom" accept="image/jpeg,image/png,image/webp" onchange="handlePhotoSelect('groom',this)">
+        </div>
+
+        <div class="photo-upload-box required-photo" id="box_couple" onclick="triggerUpload('couple')">
+          <div class="upload-required-badge">REQUIRED</div>
+          <div id="preview_couple_wrap">
+            <div class="upload-icon">💑</div>
+            <div class="upload-label">Couple Photo</div>
+            <div class="upload-spec">
+              <b>Landscape/Square preferred</b><br>
+              Min: 1200 × 800 px<br>
+              Size: 1 MB – 8 MB<br>
+              Format: JPG / PNG / WEBP
+            </div>
+          </div>
+          <div class="photo-progress" id="prog_couple"></div>
+          <input type="file" id="file_couple" accept="image/jpeg,image/png,image/webp" onchange="handlePhotoSelect('couple',this)">
+        </div>
+
+      </div>
+
+      <!-- Optional Photos (Standard/Premium) -->
+      <div id="optional_photos" style="margin-top:1.5rem;display:none;">
+        <div style="font-size:0.7rem;letter-spacing:0.15em;color:rgba(201,168,76,0.6);margin-bottom:1rem;text-transform:uppercase;">Optional Photos (Standard & Premium Plans)</div>
+        <div class="photo-grid" id="optional_grid">
+
+          <div class="photo-upload-box" id="box_engagement" onclick="triggerUpload('engagement')">
+            <div id="preview_engagement_wrap">
+              <div class="upload-icon">💍</div>
+              <div class="upload-label">Engagement</div>
+              <div class="upload-spec">Min 600px · JPG/PNG<br>Max 8 MB</div>
+            </div>
+            <div class="photo-progress" id="prog_engagement"></div>
+            <input type="file" id="file_engagement" accept="image/jpeg,image/png,image/webp" onchange="handlePhotoSelect('engagement',this)">
+          </div>
+
+          <div class="photo-upload-box" id="box_prewedding" onclick="triggerUpload('prewedding')">
+            <div id="preview_prewedding_wrap">
+              <div class="upload-icon">🌸</div>
+              <div class="upload-label">Pre-Wedding</div>
+              <div class="upload-spec">Min 600px · JPG/PNG<br>Max 8 MB</div>
+            </div>
+            <div class="photo-progress" id="prog_prewedding"></div>
+            <input type="file" id="file_prewedding" accept="image/jpeg,image/png,image/webp" onchange="handlePhotoSelect('prewedding',this)">
+          </div>
+
+          <div class="photo-upload-box" id="box_family" onclick="triggerUpload('family')">
+            <div id="preview_family_wrap">
+              <div class="upload-icon">👨‍👩‍👧‍👦</div>
+              <div class="upload-label">Family Photo</div>
+              <div class="upload-spec">Min 1000px wide · JPG/PNG<br>Max 10 MB</div>
+            </div>
+            <div class="photo-progress" id="prog_family"></div>
+            <input type="file" id="file_family" accept="image/jpeg,image/png,image/webp" onchange="handlePhotoSelect('family',this)">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Music Upload (Standard/Premium) -->
+      <div id="music_section" style="margin-top:1.5rem;display:none;">
+        <div style="font-size:0.7rem;letter-spacing:0.15em;color:rgba(201,168,76,0.6);margin-bottom:1rem;text-transform:uppercase;">Background Music (Standard & Premium)</div>
+        <div class="photo-upload-box" id="box_music" onclick="triggerUpload('music')" style="max-width:300px;">
+          <div class="upload-icon">🎵</div>
+          <div class="upload-label">Upload Music</div>
+          <div class="upload-spec">MP3 · Max 5 MB<br>Your wedding song or bhajan</div>
+          <input type="file" id="file_music" accept="audio/mpeg,audio/mp3" onchange="handleAudioSelect(this)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="form-section">
+    <div class="section-title"><div class="section-num">5</div>Payment</div>
+    <div class="section-body">
+      <div class="payment-info">
+        <div style="font-size:0.7rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:0.5rem;">Amount to Pay</div>
+        <div class="upi-amount" id="display_amount">₹0</div>
+        <div style="font-size:0.75rem;color:var(--muted);margin-bottom:1.2rem;" id="display_plan">Select a plan above</div>
+        <div style="height:1px;background:rgba(201,168,76,0.15);margin-bottom:1.2rem;"></div>
+        <div class="upi-id">UPI: charankarthik@upi</div>
+        <div class="qr-placeholder" id="qr_display">
+          <span>QR Code<br>Loads after<br>plan selected</span>
+        </div>
+        <div class="upi-note">
+          Pay via any UPI app (GPay, PhonePe, Paytm).<br>
+          <b>Use your Order ID as payment note.</b><br>
+          Share payment screenshot on WhatsApp after submitting.
+        </div>
+        <div style="margin-top:1.2rem;">
+          <div class="field">
+            <label>Payment Reference / UTR Number</label>
+            <input type="text" name="payment_ref" id="payment_ref" placeholder="12-digit UTR or transaction ID">
+            <div class="field-hint">Optional but speeds up processing. Share payment proof on WhatsApp.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <button type="submit" class="submit-btn" id="submitBtn" disabled>
+    ✦ Select a Plan to Continue
+  </button>
+
+  </form>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon">🎊</div>
+    <div class="success-title">Order Submitted!</div>
+    <div class="success-id" id="success_order_id">ORDER ID: —</div>
+    <div class="success-msg">
+      Your order has been received. A confirmation email has been sent.<br><br>
+      Please complete the UPI payment and send the screenshot to our WhatsApp.<br><br>
+      We will begin crafting your invitation within <b style="color:var(--gold)">24 hours</b> of payment confirmation.
+    </div>
+    <div style="margin-top:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="https://wa.me/919999999999" style="background:var(--gold);color:var(--ink);padding:0.8rem 1.5rem;text-decoration:none;font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.1em;" target="_blank">Send Payment Proof</a>
+      <button onclick="document.getElementById('successOverlay').classList.remove('show')" style="background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--cream);padding:0.8rem 1.5rem;cursor:pointer;font-size:0.85rem;">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+<script src="supabase-app.js"></script>
+</body>
+</html>
